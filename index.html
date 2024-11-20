@@ -152,11 +152,9 @@
         async function animatePattern() {
             const dots = Array.from(document.querySelectorAll('.dot'));
             
-            // 아래에서 위로 진행
             for (let i = ROWS - 1; i >= 0; i--) {
                 const dotsInRow = [];
                 
-                // 현재 행에서 활성화될 점들 수집
                 for (let j = 0; j < COLS; j++) {
                     const dotIndex = i * COLS + j;
                     if (defaultPattern[i][j] === 1) {
@@ -164,27 +162,22 @@
                     }
                 }
                 
-                // 현재 행의 점들을 랜덤한 순서로 활성화
                 const shuffled = dotsInRow.sort(() => Math.random() - 0.5);
                 for (let dot of shuffled) {
                     await new Promise(resolve => setTimeout(resolve, 10));
                     dot.classList.add('active');
                 }
                 
-                // 다음 행으로 넘어가기 전 약간의 딜레이
                 await new Promise(resolve => setTimeout(resolve, 20));
             }
-            // HERE 글자 깜빡이기 추가
             const blinkHERE = async () => {
-                const topRows = 3; // 상단 3줄
+                const topRows = 3;
                 const dotsInTopRows = Array.from({ length: topRows * COLS }, (_, i) => dots[i]);
                 
                 while (true) {
-                    // 모든 점을 검은색으로
                     dotsInTopRows.forEach(dot => dot.classList.add('active'));
                     await new Promise(resolve => setTimeout(resolve, 500));
                     
-                    // 원래 패턴대로 표시
                     dotsInTopRows.forEach((dot, i) => {
                         const row = Math.floor(i / COLS);
                         const col = i % COLS;
@@ -195,8 +188,6 @@
                     await new Promise(resolve => setTimeout(resolve, 1000));
                 }
             };
-
-            // 전체 애니메이션이 끝난 후 깜빡이기 시작
             blinkHERE();
         }
 
